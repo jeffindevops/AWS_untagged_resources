@@ -1,4 +1,5 @@
-from sys import exit
+# from sys import exit
+from config import conf
 
 from aws_session import aws_session
 from ec2_details import ec2_details,instance_details,volume_details,snapshot_details,ami_details
@@ -10,7 +11,7 @@ from emr_details import emr_details,emr_cluster_details
 
 def main():
 
-    profiles = ['dev','stag','pre-prod','prod']
+    profiles = conf['profiles']
 
     for p in profiles:
         print '#######################################'
@@ -31,13 +32,13 @@ def main():
         instance = cli.get_instances()
 
         notify = 0
-        print 'Fetching EC2 instance without project tag'
+        print 'Fetching EC2 instance without %s tag'%conf['tag']
         for i in instance:
             for j in i['Reservations']:
                 if j['Instances'][0]['State']['Name'] == 'running':
                     in_de = instance_details(j)
 
-                    if in_de.project == '':
+                    if in_de.tag == '':
                         print in_de.id
                         notify = 1
 
@@ -49,12 +50,12 @@ def main():
 
         ## EBS VOLUME ##
         notify = 0
-        print 'Fetching EBS volumes without project tag'
+        print 'Fetching EBS volumes without %s tag'%conf['tag']
         volumes = cli.get_volumes()
 
         for vols in volumes:
             vol_de =  volume_details(vols)
-            if vol_de.project == '':
+            if vol_de.tag == '':
                 print vol_de.id
                 notify = 1
 
@@ -67,11 +68,11 @@ def main():
         ## EBS SNAPSHOT ##
 
         notify = 0
-        print 'Fetching EBS snapshots without project tag'
+        print 'Fetching EBS snapshots without %s tag'%conf['tag']
         snapshots = cli.get_snapshots()
         for snap in snapshots:
             snap_de = snapshot_details(snap)
-            if snap_de.project == '':
+            if snap_de.tag == '':
                 print snap_de.id
                 notify = 1
         if notify == 0:
@@ -82,11 +83,11 @@ def main():
         ## AMI ##
 
         notify = 0
-        print 'Fetching AMIs without project tag'
+        print 'Fetching AMIs without %s tag'%conf['tag']
         amis = cli.get_amis()
         for ami in amis:
             ami_de = ami_details(ami)
-            if ami_de.project == '':
+            if ami_de.tag == '':
                 print ami_de.id
                 notify =1
 
@@ -109,7 +110,7 @@ def main():
         # out = rds_instance['DBInstances']
 
         notify = 0
-        print 'Fetching RDS instance without project tag'
+        print 'Fetching RDS instance without %s tag'%conf['tag']
         for vals in rds_instance:
             if len(vals['DBInstances']) > 0:
                 out = vals['DBInstances']
@@ -124,7 +125,7 @@ def main():
 
                         # print '%s-->%s'%(rds_de.name,rds_de.project)
                         # import sys;sys.exit()
-                        if rds_de.project == '':
+                        if rds_de.tag == '':
                             print rds_de.name
                             notify = 1
 
@@ -143,7 +144,7 @@ def main():
         # for s in ops_stacks['Stacks']:
         #     print s['Name']
         notify = 0
-        print 'Fetching Opswork stacks without project tag'
+        print 'Fetching Opswork stacks without  %s tag'%conf['tag']
         for outs in ops_stacks:
             if len(outs['Stacks']) > 0:
                 for s in outs['Stacks']:
@@ -153,7 +154,7 @@ def main():
                     # print tags
                     ops_de.assign_tags(tags)
 
-                    if ops_de.project == '':
+                    if ops_de.tag == '':
                         print ops_de.name
                         notify = 1
 
@@ -163,7 +164,7 @@ def main():
         ################ OpsWork  ###################
 
         ################  DynamoDB  ###################
-        print 'Fetching DynamoDB without project tag'
+        print 'Fetching DynamoDB without %s tag'%conf['tag']
         dynamo_cli = dynamodb_details(common_client.session)
         tables = dynamo_cli.get_instances()
         notify = 0
@@ -172,7 +173,7 @@ def main():
             arn = dynamo_cli.get_arn(ta)
             tags = dynamo_cli.get_tags(arn)
             table_cli.assign_tags(tags)
-            if table_cli.project == '':
+            if table_cli.tag == '':
                 print table_cli.table
                 notify = 1
 
@@ -183,13 +184,13 @@ def main():
 
         ################  REDSHIFT  ###################
 
-        print 'Fetching REDSHIFT without project tag'
+        print 'Fetching REDSHIFT without %s tag'%conf['tag']
         redshift_cli = redshift_details(common_client.session)
         clusters = redshift_cli.get_instances()
         notify = 0
         for c in clusters:
             clu_cli = cluster_details(c)
-            if clu_cli.project == '':
+            if clu_cli.tag == '':
                 print clu_cli.name
                 notify = 1
 
@@ -201,7 +202,7 @@ def main():
 
         ################  EMR  ###################
 
-        print 'Fetching EMR without project tag'
+        print 'Fetching EMR without %s tag'%conf['tag']
         emr_cli = emr_details(common_client.session)
         clusters = emr_cli.get_instances()
         notify = 0
@@ -209,7 +210,7 @@ def main():
             cu_cli = emr_cluster_details(cu)
             tags = emr_cli.get_tags(cu_cli.id)
             cu_cli.assign_tags(tags)
-            if cu_cli.project == '':
+            if cu_cli.tag == '':
                 print '%s-%s'%(cu_cli.id,cu_cli.name)
                 notify = 1
         if notify == 0:

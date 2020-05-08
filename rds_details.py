@@ -1,6 +1,6 @@
 
-# region_list = ['us-east-1','us-east-2','us-west-1','us-west-2','ap-south-1','ap-northeast-2','ap-southeast-1','ap-southeast-2','ap-northeast-1','ca-central-1','eu-central-1','eu-west-1','eu-west-2','sa-east-1']
-region_list = ['eu-west-1']
+from config import conf
+region_list = ['us-east-1','us-east-2','us-west-1','us-west-2','ap-south-1','ap-northeast-2','ap-southeast-1','ap-southeast-2','ap-northeast-1','ca-central-1','eu-central-1','eu-west-1','eu-west-2','sa-east-1']
 
 class rds_details:
     def __init__(self,session_client):
@@ -41,8 +41,8 @@ class rds_instance_details:
         self.name = self.instance['DBInstanceIdentifier']
 
     def assign_tags(self,tag):
-        self.project = ''
+        self.tag = ''
 
         for t in tag:
-            if t['Key'] == 'PROJECT':
-                self.project = t['Value']
+            if t['Key'] == conf['tag']:
+                self.tag = t['Value']

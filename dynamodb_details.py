@@ -1,4 +1,4 @@
-
+from config import conf
 class dynamodb_details:
     def __init__(self,session_client):
         self.session = session_client
@@ -28,8 +28,8 @@ class table_details:
         self.table = table
 
     def assign_tags(self,tag):
-        self.project = ''
+        self.tag = ''
 
         for t in tag:
-            if 'PROJECT' in t.values():
-                self.project = t['Value']
+            if conf['tag'] in t.values():
+                self.tag = t['Value']

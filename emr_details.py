@@ -1,3 +1,5 @@
+from config import conf
+
 class emr_details:
     def __init__(self,session_client):
         self.session = session_client
@@ -23,9 +25,9 @@ class emr_cluster_details:
         self.cluster = cluster
         self.id = self.cluster['Id']
         self.name = self.cluster['Name']
-        self.project = ''
+        self.tag = ''
 
     def assign_tags(self,tag):
         for t in tag:
-            if 'PROJECT' in t.values():
-                self.project = t['Value']
+            if conf['tag'] in t.values():
+                self.tag = t['Value']

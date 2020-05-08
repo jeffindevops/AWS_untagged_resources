@@ -1,6 +1,5 @@
-
-# region_list = ['ap-south-1', 'eu-west-2', 'eu-west-1', 'ap-northeast-2', 'ap-northeast-1', 'sa-east-1', 'ap-southeast-1', 'ap-southeast-2', 'eu-central-1', 'us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']
-region_list = ['us-east-1']
+from config import conf
+region_list = ['ap-south-1', 'eu-west-2', 'eu-west-1', 'ap-northeast-2', 'ap-northeast-1', 'sa-east-1', 'ap-southeast-1', 'ap-southeast-2', 'eu-central-1', 'us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']
 class opswork_details:
     def __init__(self,session_client):
         self.session = session_client
@@ -43,7 +42,7 @@ class opswork_instance_details:
         self.name = self.instance['Name']
 
     def assign_tags(self,tag):
-        self.project = ''
+        self.tag = ''
 
-        if 'PROJECT' in tag.keys():
+        if conf['tag'] in tag.keys():
             self.project = tag['PROJECT']

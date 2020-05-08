@@ -1,4 +1,4 @@
-
+from config import conf
 
 class ec2_details:
     def __init__(self,session_client):
@@ -40,12 +40,12 @@ class ec2_details:
 class instance_details:
     def __init__(self,instance):
         self.instance = instance
-        self.project = ''
+        self.tag = ''
 
         if 'Tags' in self.instance['Instances'][0].keys():
             for t in self.instance['Instances'][0]['Tags']:
-                if t['Key'] == 'PROJECT':
-                    self.project = t['Value']
+                if t['Key'] == conf['tag']:
+                    self.tag = t['Value']
 
         self.id = self.instance['Instances'][0]['InstanceId']
 
@@ -59,8 +59,8 @@ class volume_details:
 
         if 'Tags' in instance.keys():
             for t in self.instance['Tags']:
-                if t['Key'] == 'PROJECT':
-                    self.project = t['Value']
+                if t['Key'] == conf['tag']:
+                    self.tag = t['Value']
 
 
 class snapshot_details:
@@ -71,8 +71,8 @@ class snapshot_details:
 
         if 'Tags' in instance.keys():
             for t in self.instance['Tags']:
-                if t['Key'] == 'PROJECT':
-                    self.project = t['Value']
+                if t['Key'] == conf['tag']:
+                    self.tag = t['Value']
 
 class ami_details:
     def __init__(self,instance):
@@ -82,5 +82,5 @@ class ami_details:
 
         if 'Tags' in instance.keys():
             for t in self.instance['Tags']:
-                if t['Key'] == 'PROJECT':
-                    self.project = t['Value']
+                if t['Key'] == conf['tag']:
+                    self.tag = t['Value']
