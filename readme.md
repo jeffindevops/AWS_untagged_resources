@@ -19,6 +19,7 @@ You can specify the profiles ( aws profiles configured in machine ) in script.
 ### Config values
 1.) profiles :- aws profiles as a list. Main will loop through all profiles added in this value
     Example :- ['prod','stag','dev']
+    
 2.) tag :- Finding resources don't have this tag
     Example :- environment
     Example :- client
