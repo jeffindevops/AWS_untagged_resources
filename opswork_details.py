@@ -1,12 +1,21 @@
 from config import conf
+
+# opswork region list
 region_list = ['ap-south-1', 'eu-west-2', 'eu-west-1', 'ap-northeast-2', 'ap-northeast-1', 'sa-east-1', 'ap-southeast-1', 'ap-southeast-2', 'eu-central-1', 'us-east-1', 'us-east-2', 'us-west-1', 'us-west-2']
+
 class opswork_details:
+    """
+    Main class for boto3 client for opswork
+    """
     def __init__(self,session_client):
         self.session = session_client
         self.connection = self.session.client('opsworks',region_name=region_list[0])
 
 
     def get_instances(self):
+        """
+        Getting all instance from every region
+        """
 
         self.clients = []
 
@@ -23,17 +32,15 @@ class opswork_details:
 
     def get_tags(self,cu_arn):
 
-        # try:
-        #     tags = self.connection.list_tags(ResourceArn=cu_arn)
-        #     return tags['Tags']
-        # except:
-        #     return {}
         tags = self.connection.list_tags(ResourceArn=cu_arn)
         return tags['Tags']
 
 
 
 class opswork_instance_details:
+    """
+    Opswork details class
+    """
     def __init__(self,instance):
         self.instance = instance
 

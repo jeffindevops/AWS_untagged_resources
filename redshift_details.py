@@ -1,6 +1,9 @@
 from config import conf
 
 class redshift_details:
+    """
+    Main class for boto3 client for redshift
+    """
     def __init__(self,session_client):
         self.session = session_client
         self.connection = self.session.client('redshift')
@@ -12,6 +15,9 @@ class redshift_details:
         return response['Clusters']
 
 class cluster_details:
+    """
+    Redshift cluster details class
+    """
     def __init__(self,cluster):
         self.cluster = cluster
         self.name = self.cluster['ClusterIdentifier']

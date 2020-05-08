@@ -1,16 +1,21 @@
 
 from config import conf
+# all regions as list
 region_list = ['us-east-1','us-east-2','us-west-1','us-west-2','ap-south-1','ap-northeast-2','ap-southeast-1','ap-southeast-2','ap-northeast-1','ca-central-1','eu-central-1','eu-west-1','eu-west-2','sa-east-1']
 
 class rds_details:
+    """
+    Main class for boto3 client for rds
+    """
     def __init__(self,session_client):
         self.session = session_client
         self.connection = self.session.client('rds')
 
 
     def get_instances(self):
-
-
+        """
+        Fetching all rds instances
+        """
         ## multi region
         self.clients = []
         for r in region_list:
@@ -24,7 +29,6 @@ class rds_details:
         self.connection = self.session.client('rds')
         return self.instances_list
 
-        # return self.connection.describe_db_instances()
 
     def get_tags(self,cu_arn):
         tags = self.connection.list_tags_for_resource(ResourceName=cu_arn)
@@ -33,6 +37,9 @@ class rds_details:
 
 
 class rds_instance_details:
+    """
+    Rds instance details class
+    """
     def __init__(self,instance):
         self.instance = instance
 

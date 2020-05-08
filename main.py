@@ -1,4 +1,3 @@
-# from sys import exit
 from config import conf
 
 from aws_session import aws_session
@@ -123,8 +122,6 @@ def main():
                         tag = rds_cli.get_tags(rds_de.arn)
                         rds_de.assign_tags(tag)
 
-                        # print '%s-->%s'%(rds_de.name,rds_de.project)
-                        # import sys;sys.exit()
                         if rds_de.tag == '':
                             print rds_de.name
                             notify = 1
@@ -141,17 +138,14 @@ def main():
         ops_cli = opswork_details(common_client.session)
 
         ops_stacks = ops_cli.get_instances()
-        # for s in ops_stacks['Stacks']:
-        #     print s['Name']
+
         notify = 0
         print 'Fetching Opswork stacks without  %s tag'%conf['tag']
         for outs in ops_stacks:
             if len(outs['Stacks']) > 0:
                 for s in outs['Stacks']:
                     ops_de = opswork_instance_details(s)
-                    # print ops_de.name
                     tags = ops_cli.get_tags(ops_de.arn)
-                    # print tags
                     ops_de.assign_tags(tags)
 
                     if ops_de.tag == '':

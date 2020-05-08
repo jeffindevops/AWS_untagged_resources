@@ -1,6 +1,6 @@
 conf = {
-    'profiles':['dev','stag','pre-prod','prod'],
-    'tag':'PROJECT',
+    'profiles':['dev','stag','pre-prod','prod'], # profiles which using to check the resources
+    'tag':'PROJECT',  # searching for specific tag key
 }
 
 

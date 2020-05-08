@@ -14,8 +14,3 @@ You can specify the profiles ( aws profiles configured in machine ) in script.
 /usr/bin/python main.py
 
 ```
-
-
-### Output
-
-Will show the resources which don't have PROJECT tag

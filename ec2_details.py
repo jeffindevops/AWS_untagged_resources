@@ -1,18 +1,21 @@
 from config import conf
 
 class ec2_details:
+    """
+    Main class for boto3 client for ec2
+    """
     def __init__(self,session_client):
         self.session = session_client
         self.connection = self.session.client('ec2')
 
         self.region_list = []
+        # fetching all ec2 regions from describe_regions api call (this is only for ec2)
         self.region_list = [i['RegionName'] for i in self.connection.describe_regions()['Regions']]
 
-        # self.instances = self.get_instances()
-
-
     def get_instances(self):
-
+        """
+        Getting all instance details for every region
+        """
 
         self.clients = []
         self.clients.append(self.connection)
@@ -24,20 +27,32 @@ class ec2_details:
 
 
     def get_volumes(self):
+        """
+        fetching volume details for running instance
+        """
         response = self.connection.describe_volumes()
         return response['Volumes']
 
 
     def get_snapshots(self):
+        """
+        Fetching snapshot details from ec2
+        """
         response = self.connection.describe_snapshots()
         return response['Snapshots']
 
     def get_amis(self):
+        """
+        Fetching ami details from ec2
+        """
 
         response = self.connection.describe_images()
         return response['Images']
 
 class instance_details:
+    """
+    Instance details class
+    """
     def __init__(self,instance):
         self.instance = instance
         self.tag = ''
@@ -52,6 +67,9 @@ class instance_details:
 
 
 class volume_details:
+    """
+    Volume details class
+    """
     def __init__(self,instance):
         self.instance = instance
         self.project = ''
@@ -64,6 +82,9 @@ class volume_details:
 
 
 class snapshot_details:
+    """
+    Snapshot details class
+    """
     def __init__(self,instance):
         self.instance = instance
         self.project = ''
@@ -75,6 +96,9 @@ class snapshot_details:
                     self.tag = t['Value']
 
 class ami_details:
+    """
+    Ami details class
+    """
     def __init__(self,instance):
         self.instance = instance
         self.project = ''
